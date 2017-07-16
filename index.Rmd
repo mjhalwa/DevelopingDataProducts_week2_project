@@ -1,0 +1,260 @@
+---
+title: "My Leaflet / RMarkdown Project"
+author: "Martin Halwachs"
+date: "16 Juli 2017"
+output: html_document
+---
+
+# Libraries
+```{r, libraries}
+library(leaflet)
+library(shiny)
+```
+
+# Copyrights
+This page is meant to be a funny example of using Leaflet, RMarkdown and Shiny. The source for all used drawings and icons may be found in the weblinks from the examples provided below.
+
+# My Map
+```{r, asis=TRUE, echo=FALSE, eval=FALSE}
+ui <- fluidPage(
+#    titelPanel("Pacman in Vienna"),
+    
+    leafletOutput("mymap"),
+    actionButton("update", "Update")
+)
+  
+  #see https://rstudio.github.io/leaflet/shiny.html
+server <- function(input, output, session) {
+    
+    corners <- data.frame(lat=c(48.204276, 48.204330, 48.204328, 48.204322, 48.204298, 48.204304,
+                            48.202722, 48.202801, 48.202777, 48.202789, 48.202792, 48.202798,
+                            48.201734, 48.201846, 48.201822, 48.201826, 48.201804
+                           ),
+                      lng=c(16.338533, 16.340053, 16.341551, 16.343139, 16.345033, 16.346008,
+                             16.338664, 16.340342, 16.341677, 16.343202, 16.345024, 16.346007, 
+                            16.338808, 16.340519, 16.343224, 16.345026, 16.345964
+                           ),
+                      row=c(1,1,1,1,1,1,
+                            2,2,2,2,2,2,
+                            3,3,  3,3,3
+                           ),
+                      col=c(1,2,3,4,5,6,
+                             1,2,3,4,5,6,
+                             1,2,  4,5,6
+                           )
+                     )
+
+    makeMyIcon <- function(iconUrl, width, height, icon_height=30)
+    {
+      icon_width <- width/height*30
+      
+      makeIcon(
+      iconUrl = iconUrl,
+      iconWidth=icon_width, iconHeight= icon_height,
+      iconAnchorX = icon_width/2, iconAnchorY=icon_height/2
+      )
+    }
+
+    icons <- iconList(
+      pacmanIcon = makeMyIcon(
+        iconUrl="https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Pac_Man.svg/2000px-Pac_Man.svg.png",
+        width=833, height=974),
+      blinky.ghostIcon = makeMyIcon(
+        iconUrl="https://static.giantbomb.com/uploads/scale_small/8/87790/2469740-blinky.png",
+        width=300, height=300),
+      clyde.ghostIcon = makeMyIcon(
+        iconUrl="https://static.giantbomb.com/uploads/scale_small/8/87790/2469743-orange.png",
+        width=300, height=300),
+      inky.ghostIcon = makeMyIcon(
+        iconUrl="https://static.giantbomb.com/uploads/square_small/8/87790/2469741-inky.png",
+        width=320, height=320),
+      pinky.ghostIcon = makeMyIcon(
+        iconUrl="https://static.giantbomb.com/uploads/scale_small/8/87790/2469744-pinky.png",
+        width=300, height=300)
+    )
+
+    #default behaviour
+    values <- reactiveValues(default = 0)
+
+    observeEvent(input$update,{
+         values$default <- input$update
+    })
+    
+    df <- eventReactive(input$update, {
+      positions <- sample(1:nrow(corners), size=5, replace=FALSE)
+      data.frame(lat=corners$lat[positions],
+                 lng=corners$lng[positions])
+      
+    })
+    
+    output$mymap <- renderLeaflet({
+      my_plot <- if(values$default == 0){
+        df <- data.frame(lat=corners$lat[1:5],
+                         lng=corners$lng[1:5])
+        leaflet(df)
+      }
+      else {
+        leaflet(df())
+      }
+      my_plot %>%
+        addTiles() %>%
+        addMarkers(icon=icons)%>%
+        addRectangles(lat1 = 48.2046, lng1 = 16.3382, 
+                      lat2 = 48.2015, lng2 = 16.3465)
+
+    })
+  }
+  
+shinyApp(ui, server, options=list(height=450))
+```
+
+
+# The code
+```{r, eval=FALSE}
+ui <- fluidPage(
+#    titelPanel("Pacman in Vienna"),
+    
+    leafletOutput("mymap"),
+    actionButton("update", "Update")
+)
+  
+  #see https://rstudio.github.io/leaflet/shiny.html
+server <- function(input, output, session) {
+    
+    corners <- data.frame(lat=c(48.204276, 48.204330, 48.204328, 48.204322, 48.204298, 48.204304,
+                            48.202722, 48.202801, 48.202777, 48.202789, 48.202792, 48.202798,
+                            48.201734, 48.201846, 48.201822, 48.201826, 48.201804
+                           ),
+                      lng=c(16.338533, 16.340053, 16.341551, 16.343139, 16.345033, 16.346008,
+                             16.338664, 16.340342, 16.341677, 16.343202, 16.345024, 16.346007, 
+                            16.338808, 16.340519, 16.343224, 16.345026, 16.345964
+                           ),
+                      row=c(1,1,1,1,1,1,
+                            2,2,2,2,2,2,
+                            3,3,  3,3,3
+                           ),
+                      col=c(1,2,3,4,5,6,
+                             1,2,3,4,5,6,
+                             1,2,  4,5,6
+                           )
+                     )
+
+    makeMyIcon <- function(iconUrl, width, height, icon_height=30)
+    {
+      icon_width <- width/height*30
+      
+      makeIcon(
+      iconUrl = iconUrl,
+      iconWidth=icon_width, iconHeight= icon_height,
+      iconAnchorX = icon_width/2, iconAnchorY=icon_height/2
+      )
+    }
+
+    icons <- iconList(
+      pacmanIcon = makeMyIcon(
+        iconUrl="https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Pac_Man.svg/2000px-Pac_Man.svg.png",
+        width=833, height=974),
+      blinky.ghostIcon = makeMyIcon(
+        iconUrl="https://static.giantbomb.com/uploads/scale_small/8/87790/2469740-blinky.png",
+        width=300, height=300),
+      clyde.ghostIcon = makeMyIcon(
+        iconUrl="https://static.giantbomb.com/uploads/scale_small/8/87790/2469743-orange.png",
+        width=300, height=300),
+      inky.ghostIcon = makeMyIcon(
+        iconUrl="https://static.giantbomb.com/uploads/square_small/8/87790/2469741-inky.png",
+        width=320, height=320),
+      pinky.ghostIcon = makeMyIcon(
+        iconUrl="https://static.giantbomb.com/uploads/scale_small/8/87790/2469744-pinky.png",
+        width=300, height=300)
+    )
+
+    
+    
+    df <- eventReactive(input$update, {
+      positions <- sample(1:nrow(corners), size=5, replace=FALSE)
+      data.frame(lat=corners$lat[positions],
+                 lng=corners$lng[positions])
+      
+    })
+    
+    output$mymap <- renderLeaflet({
+      leaflet(df()) %>%
+        addTiles() %>%
+        addMarkers(icon=icons)
+    })
+  }
+  
+shinyApp(ui, server)
+```
+
+# Tutorial
+
+##step 1: some corners with markers
+```{r}
+corners <- data.frame(lat=c(48.204276, 48.204330, 48.204328, 48.204322, 48.204298, 48.204304,
+                            48.202722, 48.202801, 48.202777, 48.202789, 48.202792, 48.202798,
+                            48.201734, 48.201846, 48.201822, 48.201826, 48.201804
+                           ),
+                      lng=c(16.338533, 16.340053, 16.341551, 16.343139, 16.345033, 16.346008,
+                             16.338664, 16.340342, 16.341677, 16.343202, 16.345024, 16.346007, 
+                            16.338808, 16.340519, 16.343224, 16.345026, 16.345964
+                           ),
+                      row=c(1,1,1,1,1,1,
+                            2,2,2,2,2,2,
+                            3,3,  3,3,3
+                           ),
+                      col=c(1,2,3,4,5,6,
+                             1,2,3,4,5,6,
+                             1,2,  4,5,6
+                           )
+                     )
+
+leaflet(corners) %>%
+  addTiles() %>%
+  addMarkers(popup=paste(corners$row,",",corners$col,sep=""))
+
+```
+
+##step 2:get logos
+```{r}
+makeMyIcon <- function(iconUrl, width, height, icon_height=30)
+{
+  icon_width <- width/height*30
+  
+  makeIcon(
+  iconUrl = iconUrl,
+  iconWidth=icon_width, iconHeight= icon_height,
+  iconAnchorX = icon_width/2, iconAnchorY=icon_height/2
+  )
+}
+
+
+icons <- iconList(
+pacmanIcon = makeMyIcon(
+  iconUrl="https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Pac_Man.svg/2000px-Pac_Man.svg.png",
+  width=833, height=974),
+
+blinky.ghostIcon = makeMyIcon(
+  iconUrl="https://static.giantbomb.com/uploads/scale_small/8/87790/2469740-blinky.png",
+  width=300, height=300),
+clyde.ghostIcon = makeMyIcon(
+  iconUrl="https://static.giantbomb.com/uploads/scale_small/8/87790/2469743-orange.png",
+  width=300, height=300),
+inky.ghostIcon = makeMyIcon(
+  iconUrl="https://static.giantbomb.com/uploads/square_small/8/87790/2469741-inky.png",
+  width=320, height=320),
+pinky.ghostIcon = makeMyIcon(
+  iconUrl="https://static.giantbomb.com/uploads/scale_small/8/87790/2469744-pinky.png",
+  width=300, height=300)
+)
+positions <- sample(1:nrow(corners), size=5, replace=FALSE)
+df <- data.frame(lat=corners$lat[positions],
+                 lng=corners$lng[positions])
+
+
+leaflet(df) %>%
+  addTiles() %>%
+  addMarkers(icon=icons)
+
+```
+
