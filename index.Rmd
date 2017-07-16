@@ -15,7 +15,7 @@ library(shiny)
 This page is meant to be a funny example of using Leaflet, RMarkdown and Shiny. The source for all used drawings and icons may be found in the weblinks from the examples provided below.
 
 # My Map
-```{r, asis=TRUE, echo=FALSE, eval=FALSE}
+```{r, asis=TRUE, echo=FALSE}
 ui <- fluidPage(
 #    titelPanel("Pacman in Vienna"),
     
