@@ -127,7 +127,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">My Leaflet / RMarkdown Project</h1>
 <h4 class="author"><em>Martin Halwachs</em></h4>
-<h4 class="date"><em>16 Juli 2017</em></h4>
+<h4 class="date"><em>22 Juli 2017</em></h4>
 
 </div>
 
@@ -143,10 +143,82 @@ library(shiny)</code></pre>
 </div>
 <div id="my-map" class="section level1">
 <h1>My Map</h1>
-<div style="width: 100% ; height: 450px ; text-align: center; box-sizing: border-box; -moz-box-sizing: border-box; -webkit-box-sizing: border-box;" class="muted well">Shiny applications not supported in static R Markdown documents</div>
+<div id="htmlwidget-7e959d6b1412552321d1" style="width:672px;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-7e959d6b1412552321d1">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"maxNativeZoom":null,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"continuousWorld":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":null,"unloadInvisibleTiles":null,"updateWhenIdle":null,"detectRetina":false,"reuseTiles":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addMarkers","args":[[48.20433,48.202777,48.202789,48.204298,48.202801],[16.340053,16.341677,16.343202,16.345033,16.340342],{"iconUrl":{"data":["https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Pac_Man.svg/2000px-Pac_Man.svg.png","https://static.giantbomb.com/uploads/scale_small/8/87790/2469740-blinky.png","https://static.giantbomb.com/uploads/scale_small/8/87790/2469743-orange.png","https://static.giantbomb.com/uploads/square_small/8/87790/2469741-inky.png","https://static.giantbomb.com/uploads/scale_small/8/87790/2469744-pinky.png"],"index":[0,1,2,3,4]},"iconWidth":[25.6570841889117,30,30,30,30],"iconHeight":30,"iconAnchorX":[12.8285420944559,15,15,15,15],"iconAnchorY":15},null,null,{"clickable":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},null,null,null,null,null,null,null]}],"limits":{"lat":[48.202777,48.20433],"lng":[16.340053,16.345033]}},"evals":[],"jsHooks":[]}</script>
 </div>
-<div id="the-code" class="section level1">
-<h1>The code</h1>
+<div id="tutorial-code" class="section level1">
+<h1>Tutorial / Code</h1>
+<p>If you are interested, in how I did it, you may want to see the following code: ##step 1: some corners with markers</p>
+<pre class="r"><code>corners &lt;- data.frame(lat=c(48.204276, 48.204330, 48.204328, 48.204322, 48.204298, 48.204304,
+                            48.202722, 48.202801, 48.202777, 48.202789, 48.202792, 48.202798,
+                            48.201734, 48.201846, 48.201822, 48.201826, 48.201804
+                           ),
+                      lng=c(16.338533, 16.340053, 16.341551, 16.343139, 16.345033, 16.346008,
+                             16.338664, 16.340342, 16.341677, 16.343202, 16.345024, 16.346007, 
+                            16.338808, 16.340519, 16.343224, 16.345026, 16.345964
+                           ),
+                      row=c(1,1,1,1,1,1,
+                            2,2,2,2,2,2,
+                            3,3,  3,3,3
+                           ),
+                      col=c(1,2,3,4,5,6,
+                             1,2,3,4,5,6,
+                             1,2,  4,5,6
+                           )
+                     )
+
+leaflet(corners) %&gt;%
+  addTiles() %&gt;%
+  addMarkers(popup=paste(corners$row,&quot;,&quot;,corners$col,sep=&quot;&quot;))</code></pre>
+<pre><code>## Assuming 'lng' and 'lat' are longitude and latitude, respectively</code></pre>
+<div id="htmlwidget-97eb0d1a7bc9b7177358" style="width:672px;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-97eb0d1a7bc9b7177358">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"maxNativeZoom":null,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"continuousWorld":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":null,"unloadInvisibleTiles":null,"updateWhenIdle":null,"detectRetina":false,"reuseTiles":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addMarkers","args":[[48.204276,48.20433,48.204328,48.204322,48.204298,48.204304,48.202722,48.202801,48.202777,48.202789,48.202792,48.202798,48.201734,48.201846,48.201822,48.201826,48.201804],[16.338533,16.340053,16.341551,16.343139,16.345033,16.346008,16.338664,16.340342,16.341677,16.343202,16.345024,16.346007,16.338808,16.340519,16.343224,16.345026,16.345964],null,null,null,{"clickable":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},["1,1","1,2","1,3","1,4","1,5","1,6","2,1","2,2","2,3","2,4","2,5","2,6","3,1","3,2","3,4","3,5","3,6"],null,null,null,null,null,null]}],"limits":{"lat":[48.201734,48.20433],"lng":[16.338533,16.346008]}},"evals":[],"jsHooks":[]}</script>
+<div id="step-2get-logos" class="section level2">
+<h2>step 2:get logos</h2>
+<pre class="r"><code>makeMyIcon &lt;- function(iconUrl, width, height, icon_height=30)
+{
+  icon_width &lt;- width/height*30
+  
+  makeIcon(
+  iconUrl = iconUrl,
+  iconWidth=icon_width, iconHeight= icon_height,
+  iconAnchorX = icon_width/2, iconAnchorY=icon_height/2
+  )
+}
+
+
+icons &lt;- iconList(
+pacmanIcon = makeMyIcon(
+  iconUrl=&quot;https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Pac_Man.svg/2000px-Pac_Man.svg.png&quot;,
+  width=833, height=974),
+
+blinky.ghostIcon = makeMyIcon(
+  iconUrl=&quot;https://static.giantbomb.com/uploads/scale_small/8/87790/2469740-blinky.png&quot;,
+  width=300, height=300),
+clyde.ghostIcon = makeMyIcon(
+  iconUrl=&quot;https://static.giantbomb.com/uploads/scale_small/8/87790/2469743-orange.png&quot;,
+  width=300, height=300),
+inky.ghostIcon = makeMyIcon(
+  iconUrl=&quot;https://static.giantbomb.com/uploads/square_small/8/87790/2469741-inky.png&quot;,
+  width=320, height=320),
+pinky.ghostIcon = makeMyIcon(
+  iconUrl=&quot;https://static.giantbomb.com/uploads/scale_small/8/87790/2469744-pinky.png&quot;,
+  width=300, height=300)
+)
+positions &lt;- sample(1:nrow(corners), size=5, replace=FALSE)
+df &lt;- data.frame(lat=corners$lat[positions],
+                 lng=corners$lng[positions])
+
+
+leaflet(df) %&gt;%
+  addTiles() %&gt;%
+  addMarkers(icon=icons)</code></pre>
+<div id="htmlwidget-cb5aaca67a1233326e7c" style="width:672px;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-cb5aaca67a1233326e7c">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"maxNativeZoom":null,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"continuousWorld":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":null,"unloadInvisibleTiles":null,"updateWhenIdle":null,"detectRetina":false,"reuseTiles":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addMarkers","args":[[48.202777,48.202789,48.201826,48.204304,48.20433],[16.341677,16.343202,16.345026,16.346008,16.340053],{"iconUrl":{"data":["https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Pac_Man.svg/2000px-Pac_Man.svg.png","https://static.giantbomb.com/uploads/scale_small/8/87790/2469740-blinky.png","https://static.giantbomb.com/uploads/scale_small/8/87790/2469743-orange.png","https://static.giantbomb.com/uploads/square_small/8/87790/2469741-inky.png","https://static.giantbomb.com/uploads/scale_small/8/87790/2469744-pinky.png"],"index":[0,1,2,3,4]},"iconWidth":[25.6570841889117,30,30,30,30],"iconHeight":30,"iconAnchorX":[12.8285420944559,15,15,15,15],"iconAnchorY":15},null,null,{"clickable":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},null,null,null,null,null,null,null]}],"limits":{"lat":[48.201826,48.20433],"lng":[16.340053,16.346008]}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<div id="additional-shiny-application" class="section level1">
+<h1>Additional Shiny application</h1>
 <pre class="r"><code>ui &lt;- fluidPage(
 #    titelPanel(&quot;Pacman in Vienna&quot;),
     
@@ -204,7 +276,12 @@ server &lt;- function(input, output, session) {
         width=300, height=300)
     )
 
-    
+    #default behaviour
+    values &lt;- reactiveValues(default = 0)
+
+    observeEvent(input$update,{
+         values$default &lt;- input$update
+    })
     
     df &lt;- eventReactive(input$update, {
       positions &lt;- sample(1:nrow(corners), size=5, replace=FALSE)
@@ -214,88 +291,24 @@ server &lt;- function(input, output, session) {
     })
     
     output$mymap &lt;- renderLeaflet({
-      leaflet(df()) %&gt;%
+      my_plot &lt;- if(values$default == 0){
+        df &lt;- data.frame(lat=corners$lat[1:5],
+                         lng=corners$lng[1:5])
+        leaflet(df)
+      }
+      else {
+        leaflet(df())
+      }
+      my_plot %&gt;%
         addTiles() %&gt;%
-        addMarkers(icon=icons)
+        addMarkers(icon=icons)%&gt;%
+        addRectangles(lat1 = 48.2046, lng1 = 16.3382, 
+                      lat2 = 48.2015, lng2 = 16.3465)
+
     })
   }
   
-shinyApp(ui, server)</code></pre>
-</div>
-<div id="tutorial" class="section level1">
-<h1>Tutorial</h1>
-<div id="step-1-some-corners-with-markers" class="section level2">
-<h2>step 1: some corners with markers</h2>
-<pre class="r"><code>corners &lt;- data.frame(lat=c(48.204276, 48.204330, 48.204328, 48.204322, 48.204298, 48.204304,
-                            48.202722, 48.202801, 48.202777, 48.202789, 48.202792, 48.202798,
-                            48.201734, 48.201846, 48.201822, 48.201826, 48.201804
-                           ),
-                      lng=c(16.338533, 16.340053, 16.341551, 16.343139, 16.345033, 16.346008,
-                             16.338664, 16.340342, 16.341677, 16.343202, 16.345024, 16.346007, 
-                            16.338808, 16.340519, 16.343224, 16.345026, 16.345964
-                           ),
-                      row=c(1,1,1,1,1,1,
-                            2,2,2,2,2,2,
-                            3,3,  3,3,3
-                           ),
-                      col=c(1,2,3,4,5,6,
-                             1,2,3,4,5,6,
-                             1,2,  4,5,6
-                           )
-                     )
-
-leaflet(corners) %&gt;%
-  addTiles() %&gt;%
-  addMarkers(popup=paste(corners$row,&quot;,&quot;,corners$col,sep=&quot;&quot;))</code></pre>
-<pre><code>## Assuming 'lng' and 'lat' are longitude and latitude, respectively</code></pre>
-<div id="htmlwidget-4e7ddae1406790fcaf68" style="width:672px;height:480px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-4e7ddae1406790fcaf68">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"maxNativeZoom":null,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"continuousWorld":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":null,"unloadInvisibleTiles":null,"updateWhenIdle":null,"detectRetina":false,"reuseTiles":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addMarkers","args":[[48.204276,48.20433,48.204328,48.204322,48.204298,48.204304,48.202722,48.202801,48.202777,48.202789,48.202792,48.202798,48.201734,48.201846,48.201822,48.201826,48.201804],[16.338533,16.340053,16.341551,16.343139,16.345033,16.346008,16.338664,16.340342,16.341677,16.343202,16.345024,16.346007,16.338808,16.340519,16.343224,16.345026,16.345964],null,null,null,{"clickable":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},["1,1","1,2","1,3","1,4","1,5","1,6","2,1","2,2","2,3","2,4","2,5","2,6","3,1","3,2","3,4","3,5","3,6"],null,null,null,null,null,null]}],"limits":{"lat":[48.201734,48.20433],"lng":[16.338533,16.346008]}},"evals":[],"jsHooks":[]}</script>
-</div>
-<div id="step-2get-logos" class="section level2">
-<h2>step 2:get logos</h2>
-<pre class="r"><code>makeMyIcon &lt;- function(iconUrl, width, height, icon_height=30)
-{
-  icon_width &lt;- width/height*30
-  
-  makeIcon(
-  iconUrl = iconUrl,
-  iconWidth=icon_width, iconHeight= icon_height,
-  iconAnchorX = icon_width/2, iconAnchorY=icon_height/2
-  )
-}
-
-
-icons &lt;- iconList(
-pacmanIcon = makeMyIcon(
-  iconUrl=&quot;https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Pac_Man.svg/2000px-Pac_Man.svg.png&quot;,
-  width=833, height=974),
-
-blinky.ghostIcon = makeMyIcon(
-  iconUrl=&quot;https://static.giantbomb.com/uploads/scale_small/8/87790/2469740-blinky.png&quot;,
-  width=300, height=300),
-clyde.ghostIcon = makeMyIcon(
-  iconUrl=&quot;https://static.giantbomb.com/uploads/scale_small/8/87790/2469743-orange.png&quot;,
-  width=300, height=300),
-inky.ghostIcon = makeMyIcon(
-  iconUrl=&quot;https://static.giantbomb.com/uploads/square_small/8/87790/2469741-inky.png&quot;,
-  width=320, height=320),
-pinky.ghostIcon = makeMyIcon(
-  iconUrl=&quot;https://static.giantbomb.com/uploads/scale_small/8/87790/2469744-pinky.png&quot;,
-  width=300, height=300)
-)
-positions &lt;- sample(1:nrow(corners), size=5, replace=FALSE)</code></pre>
-<pre><code>## Warning in sample.int(length(x), size, replace, prob): '.Random.seed' ist
-## kein Integer-Vektor sondern vom Typ 'NULL', wird also ignoriert</code></pre>
-<pre class="r"><code>df &lt;- data.frame(lat=corners$lat[positions],
-                 lng=corners$lng[positions])
-
-
-leaflet(df) %&gt;%
-  addTiles() %&gt;%
-  addMarkers(icon=icons)</code></pre>
-<div id="htmlwidget-99fdcbdbb507df820127" style="width:672px;height:480px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-99fdcbdbb507df820127">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"maxNativeZoom":null,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"continuousWorld":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":null,"unloadInvisibleTiles":null,"updateWhenIdle":null,"detectRetina":false,"reuseTiles":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addMarkers","args":[[48.204304,48.20433,48.204276,48.201822,48.202789],[16.346008,16.340053,16.338533,16.343224,16.343202],{"iconUrl":{"data":["https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Pac_Man.svg/2000px-Pac_Man.svg.png","https://static.giantbomb.com/uploads/scale_small/8/87790/2469740-blinky.png","https://static.giantbomb.com/uploads/scale_small/8/87790/2469743-orange.png","https://static.giantbomb.com/uploads/square_small/8/87790/2469741-inky.png","https://static.giantbomb.com/uploads/scale_small/8/87790/2469744-pinky.png"],"index":[0,1,2,3,4]},"iconWidth":[25.6570841889117,30,30,30,30],"iconHeight":30,"iconAnchorX":[12.8285420944559,15,15,15,15],"iconAnchorY":15},null,null,{"clickable":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},null,null,null,null,null,null,null]}],"limits":{"lat":[48.201822,48.20433],"lng":[16.338533,16.346008]}},"evals":[],"jsHooks":[]}</script>
-</div>
+shinyApp(ui, server, options=list(height=450))</code></pre>
 </div>
 
 
